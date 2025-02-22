@@ -1,8 +1,8 @@
 <%# Simulate the current user (always Lobelia Sackville-Baggins) %>
 <% current_user = { name: 'Lobelia Sackville-Baggins', profile_pic: 'https://example.com/path/to/lobelia.jpg' } %>
 
-<!-- New Forum Post Form (appears at the top) -->
-<div class="new-forum-post" style="border: 1px solid #aaa; padding: 15px; margin-bottom: 30px;">
+<!-- New Forum Post Form (displayed at the top) -->
+<div class="new-forum-post">
     <h2>Create a New Forum Post</h2>
     <form action="#" method="post">
         <label for="post_title">Title:</label>
@@ -16,8 +16,8 @@
 </div>
 
 <!-- Example Forum Post (Shire Chatter) -->
-<div class="forum-post" style="border: 1px solid #ddd; padding: 15px; margin-bottom: 30px;">
-    <!-- Forum Post Header -->
+<div class="forum-post">
+    <!-- Forum Post Header with User Info -->
     <div class="post-header">
         <div class="user-info" style="display: flex; align-items: center;">
             <img src="<%= current_user[:profile_pic] %>" alt="User Picture" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;">
@@ -30,13 +30,13 @@
         <h2>"Someone has been trampling my prized garden!"</h2>
     </div>
 
-    <!-- Forum Post Body -->
+    <!-- Forum Post Body (clearly separated from header) -->
     <div class="post-body">
         <p>Some mysterious wanderer has been stepping on my tender petunias and disturbing my meticulously arranged flower beds!</p>
     </div>
 
-    <!-- Actions: Like/Dislike, Edit/Delete (only if the post belongs to current_user) -->
-    <div class="post-actions" style="margin-top: 10px;">
+    <!-- Actions: Like/Dislike, Edit/Delete (only for current_user) -->
+    <div class="post-actions">
         <button class="like-button" style="margin-right: 10px;">Like</button>
         <button class="dislike-button" style="margin-right: 10px;">Dislike</button>
         <% if current_user[:name] == "Lobelia Sackville-Baggins" %>
@@ -45,8 +45,8 @@
         <% end %>
     </div>
 
-    <!-- Comment Form -->
-    <div class="post-comment-form" style="margin-top: 20px;">
+    <!-- Comment Form for the Post -->
+    <div class="post-comment-form">
         <h3>Leave a Comment</h3>
         <form action="#" method="post">
             <textarea name="comment" rows="3" cols="60" placeholder="Share your thoughts..."></textarea>
@@ -55,34 +55,42 @@
         </form>
     </div>
 
-    <!-- Existing Comments -->
-    <div class="post-comments" style="margin-top: 20px;">
+    <!-- Existing Comments for the Post -->
+    <div class="post-comments">
         <h3>Comments</h3>
         <!-- Sample Comment 1 -->
-        <div class="comment" style="border-top: 1px solid #eee; padding-top: 10px;">
-            <div class="user-info" style="display: flex; align-items: center;">
-                <img src="https://example.com/path/to/samwise.jpg" alt="User Picture" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
-                <div>
-                    <strong>Samwise Gamgee</strong>
-                    <br>
-                    <em>Evening, 12th of Eleventy-First, 3001</em>
+        <div class="comment">
+            <div class="comment-header">
+                <div class="user-info" style="display: flex; align-items: center;">
+                    <img src="https://example.com/path/to/samwise.jpg" alt="User Picture" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+                    <div>
+                        <strong>Samwise Gamgee</strong>
+                        <br>
+                        <em>Evening, 12th of Eleventy-First, 3001</em>
+                    </div>
                 </div>
             </div>
-            <p>I'll help you track down the miscreant—no one tramples a garden on my watch!</p>
-            <%# Samwise is not the current user, so no edit/delete options here %>
+            <div class="comment-body">
+                <p>I'll help you track down the miscreant—no one tramples a garden on my watch!</p>
+                <%# Samwise is not the current user, so no edit/delete options appear %>
+            </div>
         </div>
+
         <!-- Sample Comment 2 -->
-        <div class="comment" style="border-top: 1px solid #eee; padding-top: 10px; margin-top: 10px;">
-            <div class="user-info" style="display: flex; align-items: center;">
-                <img src="https://example.com/path/to/frodo.jpg" alt="User Picture" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
-                <div>
-                    <strong>Frodo Baggins</strong>
-                    <br>
-                    <em>Evening, 12th of Eleventy-First, 3001</em>
+        <div class="comment">
+            <div class="comment-header">
+                <div class="user-info" style="display: flex; align-items: center;">
+                    <img src="https://example.com/path/to/frodo.jpg" alt="User Picture" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+                    <div>
+                        <strong>Frodo Baggins</strong>
+                        <br>
+                        <em>Evening, 12th of Eleventy-First, 3001</em>
+                    </div>
                 </div>
             </div>
-            <p>I did see a suspicious figure near Bag End just before sunset...</p>
-            <%# Frodo is not the current user, so no edit/delete options here %>
+            <div class="comment-body">
+                <p>I did see a suspicious figure near Bag End just before sunset...</p>
+            </div>
         </div>
     </div>
 </div>
@@ -93,19 +101,16 @@
         // Handle Like button toggling
         document.querySelectorAll('.like-button').forEach(function(button) {
             button.addEventListener('click', function() {
-                // Toggle the active state on the like button
                 if (button.classList.contains('active')) {
                     button.classList.remove('active');
                     button.style.fontWeight = 'normal';
                 } else {
-                    // Remove active state from the dislike button in the same forum post
                     const postContainer = button.closest('.forum-post');
                     const dislikeButton = postContainer.querySelector('.dislike-button');
                     if (dislikeButton) {
                         dislikeButton.classList.remove('active');
                         dislikeButton.style.fontWeight = 'normal';
                     }
-                    // Activate the like button
                     button.classList.add('active');
                     button.style.fontWeight = 'bold';
                 }

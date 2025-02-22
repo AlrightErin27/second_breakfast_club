@@ -65,17 +65,64 @@ nav.top-bar {
   max-width: 960px;
 }
 
-// Forum post styling
-.forum-post {
-  border: 1px solid $shire-brown;
+// New forum post form styling
+.new-forum-post {
+  border: 2px solid $shire-brown;
   padding: 15px;
   margin-bottom: 30px;
-  background-color: lighten($shire-cream, 5%);
+  background-color: lighten($shire-oak, 10%);
 }
 
-.new-forum-post {
-  border: 1px solid $shire-brown;
+// Forum post styling
+.forum-post {
+  border: 2px solid $shire-brown;
+  background-color: lighten($shire-oak, 5%);
   padding: 15px;
   margin-bottom: 30px;
+
+  .post-header {
+    // border-bottom: 1px solid $shire-green;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    text-decoration: bold;
+  }
+  
+  .post-body {
+    background-color: lighten($shire-cream, 15%);
+    padding: 10px;
+    border-radius: 4px;
+  }
+  
+  .post-actions {
+    margin-top: 10px;
+  }
+  
+  .post-comment-form {
+    margin-top: 20px;
+  }
+  
+  .post-comments {
+    margin-top: 20px;
+  }
+}
+
+// Comment styling
+.comment {
+  border: 1px solid $shire-green;
+  padding: 10px;
+  margin-top: 10px;
   background-color: lighten($shire-cream, 10%);
+  border-radius: 4px;
+  
+  .comment-header {
+    border-bottom: 1px solid $shire-green;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+  }
+  
+  .comment-body {
+    background-color: lighten($shire-cream, 20%);
+    padding: 5px;
+    border-radius: 3px;
+  }
 }
