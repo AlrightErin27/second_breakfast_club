@@ -1,11 +1,10 @@
 Rails.application.routes.draw do
-  resources :posts
   get 'forum/index'
   # Home Page (Landing on the Forum)
-  root "forum#index"
+  root "posts#index"  # Use the PostsController index action as the root
 
   # Forum (Shire Bulletin Board) - Full CRUD + Likes/Dislikes + Comments
-  resources :forum do
+  resources :forum, controller: 'posts' do
     resources :comments, only: [:create, :destroy]  # Users can comment on forum posts
 
     # Like/Dislike System (Users can toggle reactions per post)
@@ -20,9 +19,4 @@ Rails.application.routes.draw do
   # Events (Public Notice Board) - Full CRUD
   resources :events
 
-  # About Page (Optional Future Feature)
-  get 'about', to: 'pages#about'
-
-  # Contact Page (Optional Future Feature)
-  get 'contact', to: 'pages#contact'
 end
