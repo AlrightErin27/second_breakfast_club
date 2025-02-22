@@ -1,15 +1,37 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>SecondBreakfastClub</title>
+
+<head>
+    <title>Second Breakfast Club</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <%= stylesheet_link_tag 'application', media: 'all' %>
+    <%= javascript_include_tag 'application' %>
+</head>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-  </head>
+<body>
+    <header>
+        <h1>Second Breakfast Club</h1>
+        <p>The Shire’s own community hub—where hobbits exchange local news, share a bit of gossip, and plan merry gatherings (with plenty of second breakfast cheer!).</p>
+    </header>
 
-  <body>
-    <%= yield %>
-  </body>
+    <nav class="top-bar">
+        <ul>
+            <li>
+                <%= link_to 'Shire Chatter', forum_index_path, class: (current_page?(forum_index_path) || current_page?(root_path) ? 'active' : '') %>
+            </li>
+            <li>
+                <%= link_to 'Hobbit Happenings', events_path, class: (current_page?(events_path) ? 'active' : '') %>
+            </li>
+            <li>
+                <%= link_to 'Tales Beyond the Shire', world_news_path(id: 1), class: (current_page?(world_news_path(id: 1)) ? 'active' : '') %>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <%= yield %>
+    </div>
+</body>
+
 </html>

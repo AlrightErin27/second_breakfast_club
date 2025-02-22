@@ -1,0 +1,134 @@
+<%# Simulate the current user (always Lobelia Sackville-Baggins) %>
+<% current_user = { name: 'Lobelia Sackville-Baggins', profile_pic: 'https://example.com/path/to/lobelia.jpg' } %>
+
+<!-- New Forum Post Form (appears at the top) -->
+<div class="new-forum-post" style="border: 1px solid #aaa; padding: 15px; margin-bottom: 30px;">
+    <h2>Create a New Forum Post</h2>
+    <form action="#" method="post">
+        <label for="post_title">Title:</label>
+        <input type="text" id="post_title" name="post_title" placeholder="Enter your post title here" style="width: 100%; margin-bottom: 10px;">
+        <br>
+        <label for="post_body">Content:</label>
+        <textarea id="post_body" name="post_body" rows="5" style="width: 100%;" placeholder="What's on your mind?"></textarea>
+        <br>
+        <button type="submit" style="margin-top: 10px;">Submit Post</button>
+    </form>
+</div>
+
+<!-- Example Forum Post (Shire Chatter) -->
+<div class="forum-post" style="border: 1px solid #ddd; padding: 15px; margin-bottom: 30px;">
+    <!-- Forum Post Header -->
+    <div class="post-header">
+        <div class="user-info" style="display: flex; align-items: center;">
+            <img src="<%= current_user[:profile_pic] %>" alt="User Picture" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;">
+            <div>
+                <strong><%= current_user[:name] %></strong>
+                <br>
+                <em>Midday, 12th of Eleventy-First, 3001</em>
+            </div>
+        </div>
+        <h2>"Someone has been trampling my prized garden!"</h2>
+    </div>
+
+    <!-- Forum Post Body -->
+    <div class="post-body">
+        <p>Some mysterious wanderer has been stepping on my tender petunias and disturbing my meticulously arranged flower beds!</p>
+    </div>
+
+    <!-- Actions: Like/Dislike, Edit/Delete (only if the post belongs to current_user) -->
+    <div class="post-actions" style="margin-top: 10px;">
+        <button class="like-button" style="margin-right: 10px;">Like</button>
+        <button class="dislike-button" style="margin-right: 10px;">Dislike</button>
+        <% if current_user[:name] == "Lobelia Sackville-Baggins" %>
+        <a href="#" class="edit-post" style="margin-right: 10px;">Edit</a>
+        <a href="#" class="delete-post">Delete</a>
+        <% end %>
+    </div>
+
+    <!-- Comment Form -->
+    <div class="post-comment-form" style="margin-top: 20px;">
+        <h3>Leave a Comment</h3>
+        <form action="#" method="post">
+            <textarea name="comment" rows="3" cols="60" placeholder="Share your thoughts..."></textarea>
+            <br>
+            <button type="submit" style="margin-top: 5px;">Post Comment</button>
+        </form>
+    </div>
+
+    <!-- Existing Comments -->
+    <div class="post-comments" style="margin-top: 20px;">
+        <h3>Comments</h3>
+        <!-- Sample Comment 1 -->
+        <div class="comment" style="border-top: 1px solid #eee; padding-top: 10px;">
+            <div class="user-info" style="display: flex; align-items: center;">
+                <img src="https://example.com/path/to/samwise.jpg" alt="User Picture" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+                <div>
+                    <strong>Samwise Gamgee</strong>
+                    <br>
+                    <em>Evening, 12th of Eleventy-First, 3001</em>
+                </div>
+            </div>
+            <p>I'll help you track down the miscreant—no one tramples a garden on my watch!</p>
+            <%# Samwise is not the current user, so no edit/delete options here %>
+        </div>
+        <!-- Sample Comment 2 -->
+        <div class="comment" style="border-top: 1px solid #eee; padding-top: 10px; margin-top: 10px;">
+            <div class="user-info" style="display: flex; align-items: center;">
+                <img src="https://example.com/path/to/frodo.jpg" alt="User Picture" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+                <div>
+                    <strong>Frodo Baggins</strong>
+                    <br>
+                    <em>Evening, 12th of Eleventy-First, 3001</em>
+                </div>
+            </div>
+            <p>I did see a suspicious figure near Bag End just before sunset...</p>
+            <%# Frodo is not the current user, so no edit/delete options here %>
+        </div>
+    </div>
+</div>
+
+<!-- Inline JavaScript to simulate Like/Dislike toggling behavior -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Handle Like button toggling
+        document.querySelectorAll('.like-button').forEach(function(button) {
+            button.addEventListener('click', function() {
+                // Toggle the active state on the like button
+                if (button.classList.contains('active')) {
+                    button.classList.remove('active');
+                    button.style.fontWeight = 'normal';
+                } else {
+                    // Remove active state from the dislike button in the same forum post
+                    const postContainer = button.closest('.forum-post');
+                    const dislikeButton = postContainer.querySelector('.dislike-button');
+                    if (dislikeButton) {
+                        dislikeButton.classList.remove('active');
+                        dislikeButton.style.fontWeight = 'normal';
+                    }
+                    // Activate the like button
+                    button.classList.add('active');
+                    button.style.fontWeight = 'bold';
+                }
+            });
+        });
+
+        // Handle Dislike button toggling
+        document.querySelectorAll('.dislike-button').forEach(function(button) {
+            button.addEventListener('click', function() {
+                if (button.classList.contains('active')) {
+                    button.classList.remove('active');
+                    button.style.fontWeight = 'normal';
+                } else {
+                    const postContainer = button.closest('.forum-post');
+                    const likeButton = postContainer.querySelector('.like-button');
+                    if (likeButton) {
+                        likeButton.classList.remove('active');
+                        likeButton.style.fontWeight = 'normal';
+                    }
+                    button.classList.add('active');
+                    button.style.fontWeight = 'bold';
+                }
+            });
+        });
+    });
+</script>

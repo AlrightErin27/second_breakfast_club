@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'forum/index'
   # Home Page (Landing on the Forum)
   root "forum#index"
 
