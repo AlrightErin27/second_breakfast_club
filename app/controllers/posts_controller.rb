@@ -40,7 +40,7 @@ class PostsController < ApplicationController
       if @post.save
         # If the post saves successfully, redirect to the post's show page.
         # Also, display a notice that the post was created.
-        format.html { redirect_to @post, notice: "Post was successfully created." }
+        format.html {  redirect_to forum_path(@post), notice: "Post was successfully created." }
         # For JSON requests, render the show view with a status of 'created' (HTTP 201).
         format.json { render :show, status: :created, location: @post }
       else
