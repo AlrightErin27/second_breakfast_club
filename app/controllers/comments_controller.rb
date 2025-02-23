@@ -4,17 +4,16 @@ class CommentsController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:create, :destroy]
 
   def create
-    # Find the parent post (forum post) using the nested parameter :forum_id
     @post = Post.find(params[:forum_id])
-    # Build a comment associated with the post
     @comment = @post.comments.build(comment_params)
-    
+  
     if @comment.save
-      redirect_to forum_path(@post), notice: "Comment was successfully posted."
+      redirect_to forum_index_path, notice: "Comment was successfully posted."
     else
-      redirect_to forum_path(@post), alert: "There was an error posting your comment."
+      redirect_to forum_index_path, alert: "There was an error posting your comment."
     end
-  end
+end
+
 
   def destroy
     @post = Post.find(params[:forum_id])
