@@ -1,4 +1,6 @@
 class PostsController < ApplicationController
+  skip_before_action :verify_authenticity_token
+
   # Before executing the show, edit, update, or destroy actions,
   # run the set_post method to load the specific post based on the ID from the URL.
   before_action :set_post, only: %i[ show edit update destroy ]

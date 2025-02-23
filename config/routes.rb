@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :comments
   # get 'forum/index'
   # Home Page (Landing on the Forum)
   root "posts#index"  # Use the PostsController index action as the root
