@@ -59,7 +59,7 @@ class PostsController < ApplicationController
     respond_to do |format|
       if @post.update(post_params)
         # If the update is successful, redirect to the post's show page with a success notice.
-        format.html { redirect_to @post, notice: "Post was successfully updated." }
+        format.html { redirect_to forum_path(@post), notice: "Post was successfully updated." }
         # For JSON requests, render the show view with an OK status (HTTP 200).
         format.json { render :show, status: :ok, location: @post }
       else
@@ -78,7 +78,7 @@ class PostsController < ApplicationController
     respond_to do |format|
       # After deletion, redirect to the index page (list of posts) with a notice.
       # The status :see_other (HTTP 303) indicates redirection after a DELETE.
-      format.html { redirect_to posts_path, status: :see_other, notice: "Post was successfully destroyed." }
+      format.html { redirect_to forum_index_path, status: :see_other, notice: "Post was successfully destroyed." }
       # For JSON requests, return no content (HTTP 204).
       format.json { head :no_content }
     end

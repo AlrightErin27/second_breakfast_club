@@ -1,34 +1,118 @@
-<p id="notice"><%= notice %></p>
+<%# Simulate the current user (always Lobelia Sackville-Baggins) %>
+<% current_user = { name: 'Lobelia Sackville-Baggins', profile_pic: 'https://example.com/path/to/lobelia.jpg' } %>
 
-<h1>Posts</h1>
+<!-- New Forum Post Form (displayed at the top) -->
+<div class="new-forum-post">
+    <h2>Create a New Forum Post</h2>
+    <%= form_with(model: Post.new, url: forum_index_path, local: true) do |form| %>
+    <div>
+        <%= form.label :title, "Title:" %>
+        <%= form.text_field :title, placeholder: "Enter your post title here", style: "width:100%; margin-bottom:10px;" %>
+    </div>
+    <div>
+        <%= form.label :body, "Content:" %>
+        <%= form.text_area :body, placeholder: "What's on your mind?", rows: 5, style: "width:100%;" %>
+    </div>
+    <%# Automatically assign the current user's name and the current time %>
+    <div>
+        <%= form.hidden_field :author, value: current_user[:name] %>
+        <%= form.hidden_field :posted_at, value: Time.now %>
+    </div>
+    <div>
+        <%= form.submit "Submit Post", style: "margin-top:10px;" %>
+    </div>
+    <% end %>
+</div>
 
-<table>
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Body</th>
-            <th>Author</th>
-            <th>Posted at</th>
-            <th colspan="3"></th>
-        </tr>
-    </thead>
+<!-- Display Dynamic Forum Posts -->
+<% @posts.each do |post| %>
+<div class="forum-post">
+    <!-- Forum Post Header with User Info -->
+    <div class="post-header">
+        <div class="user-info" style="display: flex; align-items: center;">
+            <img src="<%= current_user[:profile_pic] %>" alt="User Picture" style="width:50px; height:50px; border-radius:50%; margin-right:10px;">
+            <div>
+                <strong><%= post.author %></strong>
+                <br>
+                <em><%= post.posted_at.strftime("%B %d, %Y at %I:%M %p") %></em>
+            </div>
+        </div>
+        <h2><%= post.title %></h2>
+    </div>
 
-    <tbody>
-        <% @posts.each do |post| %>
-        <tr>
-            <td><%= post.title %></td>
-            <td><%= post.body %></td>
-            <td><%= post.author %></td>
-            <td><%= post.posted_at %></td>
-            <td><%= link_to 'Show', forum_path(post) %></td>
-            <td><%= link_to 'Edit', edit_forum_path(post) %></td>
-            <td><%= link_to 'Destroy', forum_path(post), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <!-- Forum Post Body (clearly separated from header) -->
+    <div class="post-body">
+        <p><%= post.body %></p>
+    </div>
 
-        </tr>
+    <!-- Actions: Like/Dislike, Edit/Delete (only for current_user) -->
+    <div class="post-actions">
+        <button class="like-button" style="margin-right:10px;">Like</button>
+        <button class="dislike-button" style="margin-right:10px;">Dislike</button>
+        <% if post.author == current_user[:name] %>
+        <%= link_to "Edit", edit_forum_path(post), class: "edit-post", style: "margin-right:10px;" %>
+        <%= link_to "Delete", forum_path(post), method: :delete, data: { confirm: "Are you sure?" }, class: "delete-post" %>
         <% end %>
-    </tbody>
-</table>
+    </div>
 
-<br>
+    <!-- Comment Form for the Post -->
+    <div class="post-comment-form">
+        <h3>Leave a Comment</h3>
+        <!-- We'll implement dynamic comment creation later. For now, it's just a placeholder. -->
+        <form action="#" method="post">
+            <textarea name="comment" rows="3" cols="60" placeholder="Share your thoughts..."></textarea>
+            <br>
+            <button type="submit" style="margin-top:5px;">Post Comment</button>
+        </form>
+    </div>
 
-<%= link_to 'New Post', new_forum_path %>
+    <!-- Existing Comments for the Post -->
+    <div class="post-comments">
+        <h3>Comments</h3>
+        <!-- This section will be populated with actual comments once we build comment functionality. -->
+    </div>
+</div>
+<% end %>
+
+<!-- Inline JavaScript to simulate Like/Dislike toggling behavior -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Handle Like button toggling
+        document.querySelectorAll('.like-button').forEach(function(button) {
+            button.addEventListener('click', function() {
+                if (button.classList.contains('active')) {
+                    button.classList.remove('active');
+                    button.style.fontWeight = 'normal';
+                } else {
+                    const postContainer = button.closest('.forum-post');
+                    const dislikeButton = postContainer.querySelector('.dislike-button');
+                    if (dislikeButton) {
+                        dislikeButton.classList.remove('active');
+                        dislikeButton.style.fontWeight = 'normal';
+                    }
+                    button.classList.add('active');
+                    button.style.fontWeight = 'bold';
+                }
+            });
+        });
+
+        // Handle Dislike button toggling
+        document.querySelectorAll('.dislike-button').forEach(function(button) {
+            button.addEventListener('click', function() {
+                if (button.classList.contains('active')) {
+                    button.classList.remove('active');
+                    button.style.fontWeight = 'normal';
+                } else {
+                    const postContainer = button.closest('.forum-post');
+                    const likeButton = postContainer.querySelector('.like-button');
+                    if (likeButton) {
+                        likeButton.classList.remove('active');
+                        likeButton.style.fontWeight = 'normal';
+                    }
+                    button.classList.add('active');
+                    button.style.fontWeight = 'bold';
+                }
+            });
+        });
+    });
+</script>
