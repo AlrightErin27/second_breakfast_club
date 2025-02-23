@@ -9,7 +9,7 @@ class PostsController < ApplicationController
   # The index action retrieves all posts from the database and assigns them to @posts.
   # This data is then available to the corresponding index view for display.
   def index
-    @posts = Post.all
+    @posts = Post.order(created_at: :desc)  # Newest posts at the top
   end
 
   # GET /posts/1 or /posts/1.json
@@ -37,23 +37,18 @@ class PostsController < ApplicationController
   def create
     @post = Post.new(post_params)
 
-    # respond_to allows us to handle both HTML and JSON formats.
     respond_to do |format|
       if @post.save
-        # If the post saves successfully, redirect to the post's show page.
-        # Also, display a notice that the post was created.
-        format.html {  redirect_to forum_path(@post), notice: "Post was successfully created." }
-        # For JSON requests, render the show view with a status of 'created' (HTTP 201).
+       # Redirect directly to the forum index (Shire Chatter view)
+        format.html { redirect_to forum_index_path, notice: "Post was successfully created." }
         format.json { render :show, status: :created, location: @post }
       else
-        # If saving fails (for example, due to validation errors), re-render the new form.
-        # HTTP status 'unprocessable_entity' (422) indicates there was an error with the data.
         format.html { render :new, status: :unprocessable_entity }
-        # For JSON requests, return the errors in JSON format.
         format.json { render json: @post.errors, status: :unprocessable_entity }
       end
     end
   end
+
 
   # PATCH/PUT /posts/1 or /posts/1.json
   # The update action attempts to modify an existing post with new data.
@@ -61,7 +56,7 @@ class PostsController < ApplicationController
     respond_to do |format|
       if @post.update(post_params)
         # If the update is successful, redirect to the post's show page with a success notice.
-        format.html { redirect_to forum_path(@post), notice: "Post was successfully updated." }
+        format.html { redirect_to forum_index_path, notice: "Post was successfully updated." }
         # For JSON requests, render the show view with an OK status (HTTP 200).
         format.json { render :show, status: :ok, location: @post }
       else
