@@ -77,6 +77,14 @@ nav.top-bar {
 }
 
 // Forum post styling
+.round-img {
+  border-radius: 50%;              // Makes the image round
+  border: 2px solid $shire-brown;  // Adjust the border color and thickness as desired
+  object-fit: cover;               // Ensures the image covers the container nicely
+  margin: 10px 10px 0 0;
+}
+
+
 .forum-post {
   border: 2px solid $shire-brown;
   background-color: lighten($shire-oak, 5%);
